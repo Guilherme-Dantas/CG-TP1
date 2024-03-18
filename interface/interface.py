@@ -1,9 +1,7 @@
 
 import tkinter as tk
 from tkinter import ttk
-import sys
 import math
-sys.path.append('E:\GitHub Projects\CG-TP1')
 
 from entities.pixel import Pixel
 from entities.line import Line
@@ -192,8 +190,5 @@ class CanvasApp:
             
         self.is_window_first_pixel = not self.is_window_first_pixel
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = CanvasApp(root)
-    root.mainloop()
+
  
