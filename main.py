@@ -1,6 +1,4 @@
 import tkinter as tk
-import sys
-
 from interface.interface import CanvasApp
 
 if __name__ == "__main__":

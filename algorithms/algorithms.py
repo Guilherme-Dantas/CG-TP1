@@ -275,11 +275,6 @@ class Algorithms:
             
     def scale(self, lines: List[Line], scale_vector: List[int], canvas: Canvas) -> List[Line]:
         new_lines: List[Line] = []
-        # Define a origem como o centro visual do canvas, utilizado para não
-        # distorcer a reta original
-        origin = Pixel(round(canvas.winfo_width() / 2), round(canvas.winfo_height() / 2))
-        origin_x = origin.x
-        origin_y = origin.y
         
         for line in lines:
             line.initial_pixel.x = (line.initial_pixel.x) * scale_vector[0]
