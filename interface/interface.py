@@ -137,6 +137,13 @@ class CanvasApp:
         Algorithms().circle_bresenham_algorithm(center_pixel, radious, self.canvas)
 
     def format_window(self):
+        """
+        Ajusta o offset dos pontos selecionados na janela, tornando sempre o pixel com menor (x,y) o inicial
+        e o com maior (x,y) o final
+        
+        Returns:
+            (Pixel, Pixel): Pixels inicial e final da janelas formatados
+        """
         formatted_initial_pixel = self.window_initial_pixel
         formatted_final_pixel = self.window_final_pixel
         if formatted_initial_pixel.x > formatted_final_pixel.x:
@@ -159,6 +166,13 @@ class CanvasApp:
         self.lines = []
 
     def handle_click(self, event):
+        """
+        Gerencia o clique com o botáo esquerdo, definindo as variáveis de pixel inicial e final
+        a partir dos pontos clicados na tela
+        
+        Args:
+            event: Evento de clique com o botão esquerdo
+        """
         x, y = event.x, event.y
 
         if self.is_first_label:
@@ -176,6 +190,13 @@ class CanvasApp:
         self.is_first_label = not self.is_first_label
 
     def handle_window_click(self, event):
+        """
+        Gerencia o clique com o botão direito, definindo as variáveis de pixel inicial e final
+        a partir dos pontos clicados na tela
+        
+        Args:
+            event: Evento de clique com o botão direito
+        """
         x, y = event.x, event.y
         if self.is_window_first_pixel:
             self.canvas.delete("window_initial_pixel")

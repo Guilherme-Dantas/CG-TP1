@@ -9,6 +9,17 @@ class Algorithms:
         pass
     
     def line_dda_algorithm(self, initial_pixel: Pixel, final_pixel: Pixel, canvas: Canvas) -> None:
+        """
+        Método responsável por desenhar uma linha utilizando o algoritmo DDA
+        
+        Args:
+            initial_pixel (Pixel): Pixel que representa o ponto inicial da reta
+            final_pixel (Pixel): Pixel que representa o ponto final da reta
+            canvas (Canvas): Canvas alvo em que a linha será desenhada
+            
+        Returns:
+            None
+        """
         dx = final_pixel.x - initial_pixel.x
         dy = final_pixel.y - initial_pixel.y
         
@@ -33,6 +44,17 @@ class Algorithms:
             canvas.create_rectangle(round(x), round(y), round(x+1), round(y+1)) # Desenha um pixel na posição (x,y)   
     
     def line_bresenham_algorithm(self, initial_pixel: Pixel, final_pixel: Pixel, canvas: Canvas) -> None:
+        """
+        Método responsável por desenhar uma linha utilizando o algoritmo Bresenham
+        
+        Args:
+            initial_pixel (Pixel): Pixel que representa o ponto inicial da reta
+            final_pixel (Pixel): Pixel que representa o ponto final da reta
+            canvas (Canvas): Canvas alvo em que a linha será desenhada
+            
+        Returns:
+            None
+        """
         dx = final_pixel.x - initial_pixel.x
         dy = final_pixel.y - initial_pixel.y
         
@@ -81,7 +103,17 @@ class Algorithms:
                 canvas.create_rectangle(x, y, x+1, y+1) # Desenha um pixel na posição (x,y)
                 
     def circle_bresenham_algorithm(self, center_pixel: Pixel, radious: int, canvas: Canvas) -> None:
+        """
+        Método responsável por desenhar uma círculo utilizando o algoritmo Bresenham
         
+        Args:
+            center_pixel (Pixel): Pixel que representa o centro da circunferência
+            radious (int): Raio do círculo
+            canvas (Canvas): Canvas alvo em que o circulo será desenhado
+            
+        Returns:
+            None
+        """
         # Procedimento responsável por desenhar os equivalentes em outros quadrantes
         def draw_circle_pixels() -> None: 
             xc = center_pixel.x
@@ -114,6 +146,18 @@ class Algorithms:
             draw_circle_pixels()
 
     def clip_cohen_sutherland(self, lines: List[Line], window_min: Pixel, window_max: Pixel, canvas: Canvas) -> List[Line]:
+        """
+        Método responsável por aplicar recorte utilizando o Cohen-Sutherland
+        
+        Args:
+            lines (List[Line]): Conjunto de linhas existentes no canvas
+            window_min (Pixel): Coordenada que estipula o Xmin e Ymin da janela
+            window_max (Pixel): Coordenada que estipula o Xmax e Ymax da janela
+            canvas (Canvas): Canvas alvo em que a linha será desenhada
+            
+        Returns:
+            List[Line]: Retorna o conjunto de novas linhas que estão dentro da janela estipulada
+        """
         new_lines: List[Line] = []
         xmin = window_min.x
         ymin = window_min.y
@@ -194,6 +238,18 @@ class Algorithms:
         return new_lines
     
     def clip_liang_barsky(self, lines: List[Line], window_min: Pixel, window_max: Pixel, canvas: Canvas) -> List[Line]:
+        """
+        Método responsável por aplicar recorte utilizando o Liang_Barsky
+        
+        Args:
+            lines (List[Line]): Conjunto de linhas existentes no canvas
+            window_min (Pixel): Coordenada que estipula o Xmin e Ymin da janela
+            window_max (Pixel): Coordenada que estipula o Xmax e Ymax da janela
+            canvas (Canvas): Canvas alvo em que a linha será desenhada
+            
+        Returns:
+            List[Line]: Retorna o conjunto de novas linhas que estão dentro da janela estipulada
+        """
         new_lines: List[Line] = []
         xmin = window_min.x
         ymin = window_min.y
@@ -254,6 +310,17 @@ class Algorithms:
         return new_lines
     
     def translation(self, lines: List[Line], translation_vector: List[int], canvas: Canvas) -> List[Line]:
+        """
+        Método responsável por aplicar translação
+        
+        Args:
+            lines (List[Line]): Conjunto de linhas existentes no canvas
+            translation_vector (List[int]): Vetor bi-dimensional em que a posição 0 representa tx e a posição 1 representa ty
+            canvas (Canvas): Canvas alvo em que a linha será desenhada
+            
+        Returns:
+            List[Line]: Retorna o conjunto resultantes da translação
+        """
         # translaction_vector é um array [int, int] em que vector[0] é valor de tx e 
         # vector[1] é o valor de ty
         new_lines: List[Line] = []
@@ -274,14 +341,26 @@ class Algorithms:
         return new_lines
             
     def scale(self, lines: List[Line], scale_vector: List[int], canvas: Canvas) -> List[Line]:
-        new_lines: List[Line] = []
+        """
+        Método responsável por aplicar escala. A escala não utiliza nenhum pivô.
         
+        Args:
+            lines (List[Line]): Conjunto de linhas existentes no canvas
+            translation_vector (List[int]): Vetor bi-dimensional em que a posição 0 representa Sx e a posição 1 representa Sy
+            canvas (Canvas): Canvas alvo em que a linha será desenhada
+            
+        Returns:
+            List[Line]: Retorna o conjunto resultantes da escala
+        """
+        new_lines: List[Line] = []
+        origin = Pixel(round(canvas.winfo_width() / 2), round(canvas.winfo_height() / 2))
+        origin_x, origin_y = origin.x, origin.y
         for line in lines:
-            line.initial_pixel.x = (line.initial_pixel.x) * scale_vector[0]
-            line.initial_pixel.y = (line.initial_pixel.y) * scale_vector[1]
+            line.initial_pixel.x = (line.initial_pixel.x - origin_x) * scale_vector[0] + origin_x
+            line.initial_pixel.y = (line.initial_pixel.y - origin_y) * scale_vector[1] + origin_y
                
-            line.final_pixel.x = (line.final_pixel.x) * scale_vector[0]
-            line.final_pixel.y = (line.final_pixel.y) * scale_vector[1]
+            line.final_pixel.x = (line.final_pixel.x - origin_x) * scale_vector[0] + origin_x
+            line.final_pixel.y = (line.final_pixel.y - origin_y) * scale_vector[1] + origin_x
             
             new_lines.append(line)
         
@@ -293,6 +372,18 @@ class Algorithms:
         return new_lines
     
     def rotate(self, lines: List[Line], theta: int, canvas: Canvas) -> List[Line]:
+        """
+        Método responsável por aplicar rotação. A rotação é sempre aplicada utilizando como referência
+        o ponto (0,0)
+        
+        Args:
+            lines (List[Line]): Conjunto de linhas existentes no canvas
+            theta (int): Valor em graus utilizado para aplicar a rotação
+            canvas (Canvas): Canvas alvo em que a linha será desenhada
+            
+        Returns:
+            List[Line]: Retorna o conjunto resultantes da rotação
+        """
         new_lines: List[Line] = []
         # Define a origem como (0,0), utilizado para não
         # distorcer a reta original
@@ -332,7 +423,19 @@ class Algorithms:
             
         return new_lines
     
-    def reflection(self, lines: List[Line], axisOption, canvas: Canvas) -> List[Line]:
+    def reflection(self, lines: List[Line], axisOption: str, canvas: Canvas) -> List[Line]:
+        """
+        Método responsável por aplicar reflexão. Necessita saber qual o eixo utilizado como
+        referência
+        
+        Args:
+            lines (List[Line]): Conjunto de linhas existentes no canvas
+            axisOption (str): Qual eixo será utilizado como referência, podendo ser x, y ou xy
+            canvas (Canvas): Canvas alvo em que a linha será desenhada
+            
+        Returns:
+            List[Line]: Retorna o conjunto resultantes da reflexão
+        """
         new_lines: List[Line] = []
         origin = Pixel(round(canvas.winfo_width() / 2), round(canvas.winfo_height() / 2))
         origin_x, origin_y = origin.x, origin.y
