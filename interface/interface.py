@@ -97,6 +97,13 @@ class CanvasApp:
         self.is_first_label = True
         self.is_window_first_pixel = True
         
+    def is_number(self, value: str):
+        try:
+            float(value)
+            return True
+        except:
+            return False
+        
     # Funções para invocar os métodos responsáveis pelos algoritmos
     def reflection_x(self):
         self.lines = Algorithms().reflection(self.lines, "x", self.canvas)
@@ -108,13 +115,18 @@ class CanvasApp:
         self.lines = Algorithms().reflection(self.lines, "xy", self.canvas)
         
     def rotate(self):
-        self.lines = Algorithms().rotate(self.lines, int(self.degree.get()), self.canvas)    
+        degree = int(self.degree.get()) if self.is_number(self.degree.get()) else 0
+        self.lines = Algorithms().rotate(self.lines, degree, self.canvas)    
     
     def translation(self):
-        self.lines = Algorithms().translation(self.lines, [int(self.x_entry.get()), int(self.y_entry.get())], self.canvas)
+        x = int(self.x_entry.get()) if self.is_number(self.x_entry.get()) else 0
+        y = int(self.y_entry.get()) if self.is_number(self.y_entry.get()) else 0
+        self.lines = Algorithms().translation(self.lines, [x, y], self.canvas)
         
     def scale(self):
-        self.lines = Algorithms().scale(self.lines, [float(self.x_entry.get()), float(self.y_entry.get())], self.canvas)
+        x = float(self.x_entry.get()) if self.is_number(self.x_entry.get()) else 1
+        y = float(self.y_entry.get()) if self.is_number(self.y_entry.get()) else 1
+        self.lines = Algorithms().scale(self.lines, [x, y], self.canvas)
 
     def line_bresenham(self):
         self.canvas.delete("first_pixel")
@@ -201,12 +213,12 @@ class CanvasApp:
         if self.is_window_first_pixel:
             self.canvas.delete("window_initial_pixel")
             self.window_initial_pixel = Pixel(x,y)
-            self.canvas.create_rectangle(x,y,x+1,y-1, fill="red", tags="window_initial_pixel")
+            self.canvas.create_rectangle(x,y,x+1,y-1, fill="blue", tags="window_initial_pixel")
         else:
             self.canvas.delete("window_final_pixel")
             self.window_final_pixel = Pixel(x,y)
-            self.canvas.create_rectangle(x,y,x+1,y-1, fill="red", tags="window_final_pixel")
-            self.canvas.create_rectangle(self.window_initial_pixel.x, self.window_initial_pixel.y,self.window_final_pixel.x, self.window_final_pixel.y, outline="red", tags="window_final_pixel")
+            self.canvas.create_rectangle(x,y,x+1,y-1, fill="blue", tags="window_final_pixel")
+            self.canvas.create_rectangle(self.window_initial_pixel.x, self.window_initial_pixel.y,self.window_final_pixel.x, self.window_final_pixel.y, outline="blue", tags="window_final_pixel")
 
             
         self.is_window_first_pixel = not self.is_window_first_pixel
